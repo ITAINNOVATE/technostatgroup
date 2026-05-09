@@ -1,0 +1,62 @@
+/* 
+   Cross-Browser Support & Consistency Fixes
+   This file ensures consistent rendering across different browsers.
+*/
+
+/* 1. Normalize line height and font smoothing */
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+}
+
+/* 2. Better scrollbar styling for modern browsers */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0B3C5D;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #328cc1;
+}
+
+/* 3. Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #0B3C5D #f1f1f1;
+}
+
+/* 4. Improve form element rendering in Safari/iOS */
+input,
+textarea,
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+/* 5. Fix for image rendering in some browsers */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* 6. Selection color consistency */
+::selection {
+    background: #0B3C5D;
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background: #0B3C5D;
+    color: #ffffff;
+}

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Techno Stat Group</title>
+    <!-- System fonts used for maximum compatibility -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="img/logo-techno.png" as="image">
+    <link rel="preload" href="img/hero-bg-v2.jpg" as="image">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/browser-support.css">
+    <link rel="stylesheet" href="css/style.css?v=260">
+</head>
+
+<body>
+
+    <!-- Header Kaydan Style -->
+    <header>
+        <!-- Top Row: Logo & Contact Info -->
+        <div class="header-top">
+            <div class="container header-top-content">
+                <a href="index.html" class="logo"><img src="img/logo-techno.png" alt="Techno Stat Group Logo"></a>
+
+                <div class="header-contact">
+                    <div class="contact-item">
+                        <span class="contact-main">+229 01 96 91 19 44</span>
+                        <span class="contact-sub">technostat2018@gmail.com</span>
+                    </div>
+                    <div class="contact-icon-box">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="lang-selector">
+                        <strong>FR</strong> | <a href="contact-en.html">EN</a>
+                    </div>
+                </div>
+
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Row: Navigation -->
+        <div class="header-main">
+            <div class="container">
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="index.html">ACCUEIL</a></li>
+                        <li><a href="about.html">À PROPOS</a></li>
+                        <li><a href="services.html">SERVICES</a></li>
+                        <li><a href="experiences.html">EXPÉRIENCES</a></li>
+                        <li><a href="partners.html">PARTENAIRES</a></li>
+                        <li><a href="contact.html" class="active">NOS CONTACTS</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header contact-header">
+        <div class="container">
+            <h1 class="animate-fade-up">NOS CONTACTS</h1>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info animate-fade-up">
+                    <div class="contact-info-block">
+                        <h3>Coordonnées</h3>
+                        <p><strong>Pays :</strong> Bénin</p>
+                        <p><strong>Commune :</strong> Cotonou</p>
+                        <p><strong>Adresse :</strong> <span id="dynamic-contact_address">Akpakpa, von Fassassi</span></p>
+                        <p><strong>Email :</strong> <span id="dynamic-contact_email">technostat2018@gmail.com</span></p>
+                        <p><strong>Téléphone :</strong> <br><span id="dynamic-contact_phone">(+229) 01 96 91 19 44</span> <br>(+229) 01 97 91 99 38</p>
+                        <div style="margin-top: 15px;">
+                            <a href="https://wa.me/2290196911944" target="_blank" class="btn btn-primary"
+                                style="background-color: #25D366; border-color: #25D366; display: inline-flex; align-items: center; gap: 8px;">
+                                <i class="fab fa-whatsapp"></i> Contacter sur WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="map-container">
+                        <!-- Google Map Placeholder -->
+                        <iframe src="https://maps.google.com/maps?q=6.3845225,2.4370525&hl=fr&z=15&output=embed"
+                            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="https://maps.app.goo.gl/VwN4QFV2sxkKdJS38" target="_blank"
+                                class="btn btn-primary">Voir sur Google Maps</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form animate-fade-up" style="transition-delay: 0.2s;">
+                    <h3>Envoyez-nous un message</h3>
+                    <div class="contact-form-container">
+                        <form id="public-contact-form">
+                            <div class="form-group">
+                                <label for="name">Nom Complet</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Sujet</label>
+                                <input type="text" id="subject" name="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" id="submit-btn" class="btn btn-primary">Envoyer le message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animated Toast Notification -->
+    <div id="toast" class="toast-notification">
+        <i id="toast-icon" class="fas fa-check-circle"></i>
+        <span id="toast-text">Message envoyé avec succès !</span>
+    </div>
+
+    <style>
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.15), 0 4px 6px -2px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+        .toast-notification.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast-notification.error {
+            background: #ef4444;
+        }
+    </style>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Col 1 -->
+                <div class="footer-col">
+                    <p style="color: #ccc;">Cabinet d’études, solutions numériques et BTP pour le développement durable en Afrique.</p>
+                    <div style="margin-top: 20px;">
+                        <a href="https://www.linkedin.com/company/cabinet-techno-stat-btp/posts/?feedView=all" target="_blank" style="margin-right: 15px; font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="margin-right: 15px; font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="font-size: 1.2rem;"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div class="footer-col">
+                    <h4>Liens Rapides</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="about.html">À propos</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="experiences.html">Expériences</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Cotonou, Akpakpa</p>
+                    <p><i class="fas fa-phone"></i> (+229) 01 96 91 19 44</p>
+                    <p><i class="fas fa-phone"></i> (+229) 01 97 91 99 38</p>
+                </div>
+
+                <!-- Col 4 -->
+                <div class="footer-col">
+                    <h4>Infos Légales</h4>
+                    <p>RCCM : RB/DGOU/2018.A-007</p>
+                    <p>IFU : 0201810225408</p>
+                    <p style="margin-top: 15px;"><a href="admin.html" style="color: rgba(255,255,255,0.4); font-size: 0.85rem; text-decoration: none;"><i class="fas fa-lock"></i> Espace Admin</a></p>
+                </div>
+            </div>
+            <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; color: rgba(255,255,255,0.5);">
+                <p>&copy; Techno Stat Group – Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('public-contact-form');
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submit-btn');
+                    const originalBtnText = submitBtn.textContent;
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Envoi en cours...';
+
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const subject = document.getElementById('subject').value;
+                    const message = document.getElementById('message').value;
+
+                    // Initialize Supabase
+                    const SUPABASE_URL = "https://eqqdjqdbbwmshllqesdt.supabase.co";
+                    const SUPABASE_KEY = "sb_publishable_WWWI-B3hA2eo3lBLGlizyg_4w0Me1Fw";
+                    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+                    // Insert to database
+                    const { error } = await _supabase
+                        .from('technostat_contacts')
+                        .insert([{ name, email, subject, message }]);
+
+                    // Formspree fallback (background async)
+                    fetch("https://formspree.io/f/technostat2018@gmail.com", {
+                        method: "POST",
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    }).catch(err => console.log('Formspree fallback error:', err));
+
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+
+                    if (error) {
+                        showToast("Une erreur est survenue lors de l'envoi. Veuillez réessayer.", true);
+                    } else {
+                        showToast("Message envoyé avec succès !", false);
+                        form.reset();
+                    }
+                });
+            }
+
+            function showToast(text, isError = false) {
+                const toast = document.getElementById('toast');
+                const toastText = document.getElementById('toast-text');
+                const toastIcon = document.getElementById('toast-icon');
+
+                toastText.textContent = text;
+                if (isError) {
+                    toast.classList.add('error');
+                    toastIcon.className = 'fas fa-exclamation-circle';
+                } else {
+                    toast.classList.remove('error');
+                    toastIcon.className = 'fas fa-check-circle';
+                }
+
+                toast.classList.add('active');
+                setTimeout(() => {
+                    toast.classList.remove('active');
+                }, 4000);
+            }
+
+            // Dynamic content loader
+            const SUPABASE_URL = "https://eqqdjqdbbwmshllqesdt.supabase.co";
+            const SUPABASE_KEY = "sb_publishable_WWWI-B3hA2eo3lBLGlizyg_4w0Me1Fw";
+            const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            _supabase.from('technostat_site_content').select('key, value').then(({ data, error }) => {
+                if (!error && data) {
+                    data.forEach(item => {
+                        const el = document.getElementById('dynamic-' + item.key);
+                        if (el) {
+                            el.innerHTML = item.value.replace(/\n/g, '<br>');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

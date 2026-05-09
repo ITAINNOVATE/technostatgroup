@@ -1,0 +1,30 @@
+<svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    <!-- Minimal Abstract Africa Map -->
+    <defs>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    
+    <g opacity="0.6" stroke="#BBBBBB" stroke-width="1.5" fill="none" transform="translate(50, 50)">
+        <!-- Artistic Approximation of Africa Outline -->
+        <path d="M 280,60 L 480,60 L 550,150 L 680,300 L 650,400 L 480,700 L 380,550 L 150,400 L 180,250 L 280,60 Z" strke-linejoin="round" />
+        
+        <!-- Internal decorative geometric lines for "Tech/Data" feel -->
+        <path d="M 280,60 L 380,550" opacity="0.3" stroke-dasharray="5,5"/>
+        <path d="M 480,60 L 150,400" opacity="0.3" stroke-dasharray="5,5"/>
+        <path d="M 680,300 L 150,400" opacity="0.3" stroke-dasharray="5,5"/>
+        <path d="M 550,150 L 480,700" opacity="0.3" stroke-dasharray="5,5"/>
+
+        <!-- Connection Nodes -->
+        <circle cx="280" cy="60" r="4" fill="#BBBBBB" opacity="0.8" />
+        <circle cx="480" cy="60" r="4" fill="#BBBBBB" opacity="0.8" />
+        <circle cx="680" cy="300" r="4" fill="#BBBBBB" opacity="0.8" />
+        <circle cx="480" cy="700" r="4" fill="#BBBBBB" opacity="0.8" />
+        <circle cx="150" cy="400" r="4" fill="#BBBBBB" opacity="0.8" />
+    </g>
+</svg>

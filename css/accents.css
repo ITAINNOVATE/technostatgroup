@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+/* Brand Color Accents for Cards */
+.accent-blue {
+    border-top: 4px solid var(--primary-blue);
+}
+
+.accent-green {
+    border-top: 4px solid var(--brand-green);
+}
+
+.accent-yellow {
+    border-top: 4px solid var(--brand-yellow);
+}
+
+.accent-red {
+    border-top: 4px solid var(--brand-red);
+}
+
+.accent-green h4 {
+    color: var(--brand-green);
+}
+
+.accent-yellow h4 {
+    color: var(--brand-yellow);
+}
+
+.accent-red h4 {
+    color: var(--brand-red);
+}
+
+.accent-green .axe-pill-link {
+    background-color: var(--brand-green);
+    color: #fff;
+}
+
+.accent-yellow .axe-pill-link {
+    background-color: var(--brand-yellow);
+    color: #fff;
+}
+
+.accent-red .axe-pill-link {
+    background-color: var(--brand-red);
+    color: #fff;
+}
