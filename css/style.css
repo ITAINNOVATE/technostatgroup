@@ -2442,6 +2442,177 @@ footer {
     color: #c0392b;
 }
 
+/* See Images Button inside Experience Card */
+.btn-view-images {
+    margin-top: 18px;
+    padding: 10px 16px;
+    background-color: transparent;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition-fluid);
+    width: 100%;
+}
+
+.btn-view-images:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.axe-1-theme .btn-view-images:hover {
+    background-color: rgba(11, 60, 93, 0.05);
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.axe-2-theme .btn-view-images:hover {
+    background-color: rgba(46, 204, 113, 0.05);
+    border-color: #27ae60;
+    color: #27ae60;
+}
+
+.axe-3-theme .btn-view-images:hover {
+    background-color: rgba(231, 76, 60, 0.05);
+    border-color: #c0392b;
+    color: #c0392b;
+}
+
+/* Gallery Lightbox Modal */
+.gallery-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.gallery-lightbox.active {
+    display: flex;
+}
+
+.lightbox-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+}
+
+.lightbox-content {
+    position: relative;
+    background: #ffffff;
+    max-width: 700px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    z-index: 100001;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #f1f5f9;
+    border: none;
+    font-size: 1.8rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #475569;
+}
+
+.lightbox-close:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.lightbox-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    padding-right: 40px;
+    line-height: 1.4;
+}
+
+.lightbox-carousel {
+    width: 100%;
+    min-height: 260px;
+    background: #f8fafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    border: 1px dashed #cbd5e1;
+}
+
+.lightbox-placeholder {
+    text-align: center;
+    padding: 30px;
+}
+
+.lightbox-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.lightbox-placeholder h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.lightbox-placeholder p {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.lightbox-caption {
+    font-size: 0.85rem;
+    color: #64748b;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Animations */
+.animate-scale {
+    transform: scale(0.95);
+    opacity: 0;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
+}
+
+.gallery-lightbox.active .animate-scale {
+    transform: scale(1);
+    opacity: 1;
+}
+
 /* Brand Color Accents for Cards */
 .accent-blue {
     border-top: 4px solid var(--primary-blue);

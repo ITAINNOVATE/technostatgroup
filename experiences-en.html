@@ -417,16 +417,16 @@
                 <!-- Col 3 -->
                 <div class="footer-col">
                     <h4>Contact</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> Cotonou, Akpakpa</p>
-                    <p><i class="fas fa-phone"></i> (+229) 01 96 91 19 44</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="dynamic-contact_address">Cotonou, Akpakpa</span></p>
+                    <p><i class="fas fa-phone"></i> <span id="dynamic-contact_phone">(+229) 01 96 91 19 44</span></p>
                     <p><i class="fas fa-phone"></i> (+229) 01 97 91 99 38</p>
                 </div>
 
                 <!-- Col 4 -->
                 <div class="footer-col">
                     <h4>Legal Info</h4>
-                    <p>RCCM : RB/DGOU/2018.A-007</p>
-                    <p>IFU : 0201810225408</p>
+                    <p id="dynamic-footer_rccm">RCCM : RB/DGOU/2018.A-007</p>
+                    <p id="dynamic-footer_ifu">IFU : 0201810225408</p>
                     <p style="margin-top: 15px;"><a href="admin.html" style="color: rgba(255,255,255,0.4); font-size: 0.85rem; text-decoration: none;"><i class="fas fa-lock"></i> Admin Space</a></p>
                 </div>
             </div>
@@ -444,47 +444,124 @@
             const SUPABASE_KEY = "sb_publishable_WWWI-B3hA2eo3lBLGlizyg_4w0Me1Fw";
             const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            const { data, error } = await _supabase
-                .from('technostat_projects')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            if (!error && data && data.length > 0) {
-                // Group projects by axe
-                const axe1 = data.filter(p => p.axe === 1);
-                const axe2 = data.filter(p => p.axe === 2);
-                const axe3 = data.filter(p => p.axe === 3);
-
-                const renderCard = p => `
-                    <div class="experience-card animate-fade-up visible">
-                        <span class="experience-date">${escapeHTML(p.date_str)}</span>
-                        <h4 class="experience-title">${escapeHTML(p.title)}</h4>
-                        <div class="experience-meta">
-                            <div><i class="fas fa-building"></i> <strong>${p.axe === 2 ? 'Beneficiary' : 'Client'}:</strong> ${escapeHTML(p.mandataire)}</div>
-                            <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Theme' : 'Location'}:</strong> ${escapeHTML(p.lieu)}</div>
-                        </div>
-                    </div>
-                `;
-
-                if (axe1.length > 0) {
-                    document.getElementById('axe-1-grid').innerHTML = axe1.map(renderCard).join('');
-                }
-                if (axe2.length > 0) {
-                    document.getElementById('axe-2-grid').innerHTML = axe2.map(renderCard).join('');
-                }
-                if (axe3.length > 0) {
-                    document.getElementById('axe-3-grid').innerHTML = axe3.map(renderCard).join('');
-                }
-            }
-
             function escapeHTML(str) {
                 if (!str) return '';
                 return str.replace(/[&<>'"]/g, 
                     tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
                 );
             }
+
+            function escapeJS(str) {
+                if (!str) return '';
+                return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            }
+
+            // Load projects
+            _supabase.from('technostat_projects').select('*').order('created_at', { ascending: false }).then(({ data, error }) => {
+                if (!error && data && data.length > 0) {
+                    const axe1 = data.filter(p => p.axe === 1);
+                    const axe2 = data.filter(p => p.axe === 2);
+                    const axe3 = data.filter(p => p.axe === 3);
+
+                    const renderCard = p => `
+                        <div class="experience-card animate-fade-up visible">
+                            <span class="experience-date">${escapeHTML(p.date_str)}</span>
+                            <h4 class="experience-title">${escapeHTML(p.title)}</h4>
+                            <div class="experience-meta">
+                                <div><i class="fas fa-building"></i> <strong>${p.axe === 2 ? 'Beneficiary' : 'Client'}:</strong> ${escapeHTML(p.mandataire)}</div>
+                                <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Theme' : 'Location'}:</strong> ${escapeHTML(p.lieu)}</div>
+                            </div>
+                            <button class="btn-view-images" onclick="openGallery('${escapeJS(p.title)}', ${p.axe})">
+                                <i class="fas fa-images"></i> View images
+                            </button>
+                        </div>
+                    `;
+
+                    if (axe1.length > 0) {
+                        document.getElementById('axe-1-grid').innerHTML = axe1.map(renderCard).join('');
+                    }
+                    if (axe2.length > 0) {
+                        document.getElementById('axe-2-grid').innerHTML = axe2.map(renderCard).join('');
+                    }
+                    if (axe3.length > 0) {
+                        document.getElementById('axe-3-grid').innerHTML = axe3.map(renderCard).join('');
+                    }
+                }
+            });
+
+            // Load footer/site content
+            _supabase.from('technostat_site_content').select('key, value').then(({ data, error }) => {
+                if (!error && data) {
+                    data.forEach(item => {
+                        const elements = document.querySelectorAll('[id="dynamic-' + item.key + '"]');
+                        elements.forEach(el => {
+                            el.innerHTML = item.value.replace(/\n/g, '<br>');
+                        });
+                    });
+                }
+            });
         });
+
+        function openGallery(title, axe) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxCarousel = document.getElementById('lightbox-carousel');
+            const lightboxCaption = document.querySelector('.lightbox-caption');
+
+            lightboxTitle.innerText = title;
+            
+            let placeholderHTML = '';
+            if (axe === 1) {
+                placeholderHTML = `
+                    <div class="lightbox-placeholder">
+                        <i class="fas fa-chart-line" style="color: var(--primary-blue);"></i>
+                        <h4>Axis 1 - Studies & Impact Evaluation</h4>
+                        <p>No field photos or public reports are currently available.<br>Illustrations for this study mission will be added soon.</p>
+                    </div>
+                `;
+                lightboxCaption.innerText = "Sector: Socio-Economic Studies, Research & Evaluations";
+            } else if (axe === 2) {
+                placeholderHTML = `
+                    <div class="lightbox-placeholder">
+                        <i class="fas fa-laptop-code" style="color: #27ae60;"></i>
+                        <h4>Axis 2 - Digital Solutions & Certifications</h4>
+                        <p>No screenshot or app preview is currently available.<br>Interfaces for this digital solution will be illustrated after integration.</p>
+                    </div>
+                `;
+                lightboxCaption.innerText = "Sector: Information Systems, Mobile Applications, Training & Certifications";
+            } else {
+                placeholderHTML = `
+                    <div class="lightbox-placeholder">
+                        <i class="fas fa-hard-hat" style="color: #c0392b;"></i>
+                        <h4>Axis 3 - Engineering, Infrastructures & Construction</h4>
+                        <p>No site photos or construction plans are currently available.<br>Pictures of transport infrastructure achievements will be added soon.</p>
+                    </div>
+                `;
+                lightboxCaption.innerText = "Sector: Road Design, Bridges & Construction Site Monitoring";
+            }
+
+            lightboxCarousel.innerHTML = placeholderHTML;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     </script>
+
+    <!-- Lightbox Modal -->
+    <div id="gallery-lightbox" class="gallery-lightbox">
+        <div class="lightbox-overlay" onclick="closeGallery()"></div>
+        <div class="lightbox-content animate-scale">
+            <button class="lightbox-close" onclick="closeGallery()">&times;</button>
+            <h3 id="lightbox-title" class="lightbox-title"></h3>
+            <div id="lightbox-carousel" class="lightbox-carousel"></div>
+            <div class="lightbox-caption"></div>
+        </div>
+    </div>
 </body>
 
 </html>

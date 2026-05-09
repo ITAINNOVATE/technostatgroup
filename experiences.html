@@ -445,6 +445,11 @@
                 );
             }
 
+            function escapeJS(str) {
+                if (!str) return '';
+                return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            }
+
             // Load projects
             _supabase.from('technostat_projects').select('*').order('created_at', { ascending: false }).then(({ data, error }) => {
                 if (!error && data && data.length > 0) {
@@ -460,6 +465,9 @@
                                 <div><i class="fas fa-building"></i> <strong>Mandataire :</strong> ${escapeHTML(p.mandataire)}</div>
                                 <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Thème' : 'Lieu'} :</strong> ${escapeHTML(p.lieu)}</div>
                             </div>
+                            <button class="btn-view-images" onclick="openGallery('${escapeJS(p.title)}', ${p.axe})">
+                                <i class="fas fa-images"></i> Voir les images
+                            </button>
                         </div>
                     `;
 
@@ -487,7 +495,67 @@
                 }
             });
         });
+
+        function openGallery(title, axe) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxCarousel = document.getElementById('lightbox-carousel');
+            const lightboxCaption = document.querySelector('.lightbox-caption');
+
+            lightboxTitle.innerText = title;
+            
+            let placeholderHTML = '';
+            if (axe === 1) {
+                placeholderHTML = `
+                    <div class="lightbox-placeholder">
+                        <i class="fas fa-chart-line" style="color: var(--primary-blue);"></i>
+                        <h4>Axe 1 - Études & Évaluation d'impact</h4>
+                        <p>Aucune photo de terrain ou rapport public n'est disponible pour le moment.<br>Les illustrations de cette mission d'étude seront ajoutées ultérieurement.</p>
+                    </div>
+                `;
+                lightboxCaption.innerText = "Secteur : Études Socio-Économiques, Recherches & Évaluations";
+            } else if (axe === 2) {
+                placeholderHTML = `
+                    <div class="lightbox-placeholder">
+                        <i class="fas fa-laptop-code" style="color: #27ae60;"></i>
+                        <h4>Axe 2 - Solutions Numériques & Certifications</h4>
+                        <p>Aucune capture d'écran ou aperçu d'application n'est disponible pour l'instant.<br>Les interfaces de cette solution numérique seront illustrées après intégration.</p>
+                    </div>
+                `;
+                lightboxCaption.innerText = "Secteur : Systèmes d'Information, Applications Mobiles, Formations & Certifications";
+            } else {
+                placeholderHTML = `
+                    <div class="lightbox-placeholder">
+                        <i class="fas fa-hard-hat" style="color: #c0392b;"></i>
+                        <h4>Axe 3 - Ingénierie, Infrastructures & BTP</h4>
+                        <p>Aucune photo de chantier ou plan de construction n'est disponible pour le moment.<br>Les clichés des réalisations d'infrastructures de transport seront ajoutés prochainement.</p>
+                    </div>
+                `;
+                lightboxCaption.innerText = "Secteur : Aménagements Routiers, Ouvrages d'Art & Suivi de Chantiers (BTP)";
+            }
+
+            lightboxCarousel.innerHTML = placeholderHTML;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     </script>
+
+    <!-- Lightbox Modal -->
+    <div id="gallery-lightbox" class="gallery-lightbox">
+        <div class="lightbox-overlay" onclick="closeGallery()"></div>
+        <div class="lightbox-content animate-scale">
+            <button class="lightbox-close" onclick="closeGallery()">&times;</button>
+            <h3 id="lightbox-title" class="lightbox-title"></h3>
+            <div id="lightbox-carousel" class="lightbox-carousel"></div>
+            <div class="lightbox-caption"></div>
+        </div>
+    </div>
 </body>
 
 </html>
