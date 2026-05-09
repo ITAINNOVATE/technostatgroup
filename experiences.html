@@ -411,16 +411,16 @@
                 <!-- Col 3 -->
                 <div class="footer-col">
                     <h4>Contact</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> Cotonou, Akpakpa</p>
-                    <p><i class="fas fa-phone"></i> (+229) 01 96 91 19 44</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="dynamic-contact_address">Cotonou, Akpakpa</span></p>
+                    <p><i class="fas fa-phone"></i> <span id="dynamic-contact_phone">(+229) 01 96 91 19 44</span></p>
                     <p><i class="fas fa-phone"></i> (+229) 01 97 91 99 38</p>
                 </div>
 
                 <!-- Col 4 -->
                 <div class="footer-col">
                     <h4>Infos Légales</h4>
-                    <p>RCCM : RB/DGOU/2018.A-007</p>
-                    <p>IFU : 0201810225408</p>
+                    <p id="dynamic-footer_rccm">RCCM : RB/DGOU/2018.A-007</p>
+                    <p id="dynamic-footer_ifu">IFU : 0201810225408</p>
                     <p style="margin-top: 15px;"><a href="admin.html" style="color: rgba(255,255,255,0.4); font-size: 0.85rem; text-decoration: none;"><i class="fas fa-lock"></i> Espace Admin</a></p>
                 </div>
             </div>
@@ -433,43 +433,10 @@
     <script src="js/script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const SUPABASE_URL = "https://eqqdjqdbbwmshllqesdt.supabase.co";
             const SUPABASE_KEY = "sb_publishable_WWWI-B3hA2eo3lBLGlizyg_4w0Me1Fw";
             const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-            const { data, error } = await _supabase
-                .from('technostat_projects')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            if (!error && data && data.length > 0) {
-                // Group projects by axe
-                const axe1 = data.filter(p => p.axe === 1);
-                const axe2 = data.filter(p => p.axe === 2);
-                const axe3 = data.filter(p => p.axe === 3);
-
-                const renderCard = p => `
-                    <div class="experience-card animate-fade-up">
-                        <span class="experience-date">${escapeHTML(p.date_str)}</span>
-                        <h4 class="experience-title">${escapeHTML(p.title)}</h4>
-                        <div class="experience-meta">
-                            <div><i class="fas fa-building"></i> <strong>Mandataire :</strong> ${escapeHTML(p.mandataire)}</div>
-                            <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Thème' : 'Lieu'} :</strong> ${escapeHTML(p.lieu)}</div>
-                        </div>
-                    </div>
-                `;
-
-                if (axe1.length > 0) {
-                    document.getElementById('axe-1-grid').innerHTML = axe1.map(renderCard).join('');
-                }
-                if (axe2.length > 0) {
-                    document.getElementById('axe-2-grid').innerHTML = axe2.map(renderCard).join('');
-                }
-                if (axe3.length > 0) {
-                    document.getElementById('axe-3-grid').innerHTML = axe3.map(renderCard).join('');
-                }
-            }
 
             function escapeHTML(str) {
                 if (!str) return '';
@@ -477,6 +444,48 @@
                     tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
                 );
             }
+
+            // Load projects
+            _supabase.from('technostat_projects').select('*').order('created_at', { ascending: false }).then(({ data, error }) => {
+                if (!error && data && data.length > 0) {
+                    const axe1 = data.filter(p => p.axe === 1);
+                    const axe2 = data.filter(p => p.axe === 2);
+                    const axe3 = data.filter(p => p.axe === 3);
+
+                    const renderCard = p => `
+                        <div class="experience-card animate-fade-up">
+                            <span class="experience-date">${escapeHTML(p.date_str)}</span>
+                            <h4 class="experience-title">${escapeHTML(p.title)}</h4>
+                            <div class="experience-meta">
+                                <div><i class="fas fa-building"></i> <strong>Mandataire :</strong> ${escapeHTML(p.mandataire)}</div>
+                                <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Thème' : 'Lieu'} :</strong> ${escapeHTML(p.lieu)}</div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (axe1.length > 0) {
+                        document.getElementById('axe-1-grid').innerHTML = axe1.map(renderCard).join('');
+                    }
+                    if (axe2.length > 0) {
+                        document.getElementById('axe-2-grid').innerHTML = axe2.map(renderCard).join('');
+                    }
+                    if (axe3.length > 0) {
+                        document.getElementById('axe-3-grid').innerHTML = axe3.map(renderCard).join('');
+                    }
+                }
+            });
+
+            // Load footer/site content
+            _supabase.from('technostat_site_content').select('key, value').then(({ data, error }) => {
+                if (!error && data) {
+                    data.forEach(item => {
+                        const elements = document.querySelectorAll('[id="dynamic-' + item.key + '"]');
+                        elements.forEach(el => {
+                            el.innerHTML = item.value.replace(/\n/g, '<br>');
+                        });
+                    });
+                }
+            });
         });
     </script>
 </body>

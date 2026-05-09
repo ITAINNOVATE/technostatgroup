@@ -2336,53 +2336,53 @@ footer {
 }
 
 .experience-card {
-    background: #fff;
+    background: #ffffff;
     border-radius: var(--radius-card);
     padding: 30px;
-    box-shadow: var(--shadow-premium);
-    border-top: 4px solid transparent;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+    border-left: 6px solid transparent;
     transition: var(--transition-fluid);
     height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    border-left: 1px solid rgba(0, 0, 0, 0.02);
-    border-right: 1px solid rgba(0, 0, 0, 0.02);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .experience-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(11, 60, 93, 0.08);
+    border-color: rgba(11, 60, 93, 0.15);
 }
 
 /* Card Content Styling */
 .experience-date {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     margin-bottom: 15px;
-    display: block;
-    opacity: 0.8;
+    display: inline-block;
+    align-self: flex-start;
+    padding: 6px 14px;
+    border-radius: 6px;
 }
 
 .experience-title {
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 20px;
-    line-height: 1.4;
-    color: var(--text-main);
+    line-height: 1.5;
+    color: #0f172a;
 }
 
 .experience-meta {
     margin-top: auto;
-    /* Push to bottom */
     padding-top: 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid #f1f5f9;
     font-size: 0.95rem;
-    color: var(--text-secondary);
+    color: #475569;
 }
 
 .experience-meta div {
@@ -2400,39 +2400,14 @@ footer {
 }
 
 /* Axe Specific Themes */
-/* Axe 1: Blue */
+/* Axe 1: Blue (Etudes) */
 .axe-1-theme .experience-card {
-    border-top-color: var(--primary-blue);
+    border-left-color: var(--primary-blue);
 }
 
 .axe-1-theme .experience-date {
     color: var(--primary-blue);
-}
-
-.axe-1-theme .experience-meta i {
-    color: var(--primary-blue);
-}
-
-/* Axe 2: Orange */
-.axe-2-theme .experience-card {
-    border-top-color: var(--accent-orange);
-}
-
-.axe-2-theme .experience-date {
-    color: var(--accent-orange);
-}
-
-.axe-2-theme .experience-meta i {
-    color: var(--accent-orange);
-}
-
-/* Axe 1: Blue (Default) */
-.axe-1-theme .experience-card {
-    border-top-color: var(--primary-blue);
-}
-
-.axe-1-theme .experience-date {
-    color: var(--primary-blue);
+    background-color: rgba(11, 60, 93, 0.08);
 }
 
 .axe-1-theme .experience-meta i {
@@ -2441,28 +2416,30 @@ footer {
 
 /* Axe 2: Green (Digital) */
 .axe-2-theme .experience-card {
-    border-top-color: var(--brand-green);
+    border-left-color: var(--brand-green);
 }
 
 .axe-2-theme .experience-date {
-    color: var(--brand-green);
+    color: #27ae60;
+    background-color: rgba(46, 204, 113, 0.1);
 }
 
 .axe-2-theme .experience-meta i {
-    color: var(--brand-green);
+    color: #27ae60;
 }
 
 /* Axe 3: Red (BTP) */
 .axe-3-theme .experience-card {
-    border-top-color: var(--brand-red);
+    border-left-color: var(--brand-red);
 }
 
 .axe-3-theme .experience-date {
-    color: var(--brand-red);
+    color: #c0392b;
+    background-color: rgba(231, 76, 60, 0.1);
 }
 
 .axe-3-theme .experience-meta i {
-    color: var(--brand-red);
+    color: #c0392b;
 }
 
 /* Brand Color Accents for Cards */
