@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/browser-support.css">
-    <link rel="stylesheet" href="css/style.css?v=260">
+    <link rel="stylesheet" href="css/style.css?v=261">
 </head>
 
 <body>
@@ -492,6 +492,23 @@
                             el.innerHTML = item.value.replace(/\n/g, '<br>');
                         });
                     });
+                }
+            });
+
+            // Automatically add buttons to any static cards that are already present or fall back
+            document.querySelectorAll('.experience-card').forEach(card => {
+                if (!card.querySelector('.btn-view-images')) {
+                    const titleEl = card.querySelector('.experience-title');
+                    const title = titleEl ? titleEl.innerText : 'Projet';
+                    let axe = 1;
+                    if (card.closest('.axe-2-theme')) axe = 2;
+                    else if (card.closest('.axe-3-theme')) axe = 3;
+                    
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-view-images';
+                    btn.innerHTML = `<i class="fas fa-images"></i> Voir les images`;
+                    btn.onclick = () => openGallery(title, axe);
+                    card.appendChild(btn);
                 }
             });
         });
