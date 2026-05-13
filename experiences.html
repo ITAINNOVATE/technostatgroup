@@ -102,6 +102,9 @@
                             <div><i class="fas fa-building"></i> <strong>Mandataire :</strong> ANAN</div>
                             <div><i class="fas fa-map-marker-alt"></i> <strong>Lieu :</strong> Plan national</div>
                         </div>
+                        <button class="btn-view-images" onclick="openGallery('Étude nationale - ANAN', 1)">
+                            <i class="fas fa-images"></i> Voir les images
+                        </button>
                     </div>
 
                     <!-- Item 2 -->
@@ -521,6 +524,56 @@
 
             lightboxTitle.innerText = title;
             
+            // Reset visual class
+            lightboxCarousel.classList.remove('has-images');
+            
+            // Check if specific project "ANAN"
+            if (title.toLowerCase().includes('anan')) {
+                lightboxCarousel.classList.add('has-images');
+                
+                const images = [
+                    'img/experiences/anan/anan-1.jpg',
+                    'img/experiences/anan/anan-2.jpg',
+                    'img/experiences/anan/anan-3.jpg',
+                    'img/experiences/anan/anan-4.jpg',
+                    'img/experiences/anan/anan-5.jpg',
+                    'img/experiences/anan/anan-6.jpg',
+                    'img/experiences/anan/anan-7.jpg',
+                    'img/experiences/anan/anan-8.jpg'
+                ];
+                
+                lightboxCarousel.innerHTML = `
+                    <div class="lightbox-slider" id="slider-container">
+                        ${images.map((src, idx) => `
+                            <div class="lightbox-slide">
+                                <img src="${src}" alt="Photo ${idx + 1}">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="lightbox-nav-btn prev" onclick="scrollSlider(-1)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="lightbox-nav-btn next" onclick="scrollSlider(1)"><i class="fas fa-chevron-right"></i></button>
+                    <div class="lightbox-dots">
+                        ${images.map((_, idx) => `<div class="lightbox-dot ${idx === 0 ? 'active' : ''}" onclick="scrollToSlide(${idx})"></div>`).join('')}
+                    </div>
+                `;
+                
+                lightboxCaption.innerText = "Photos de la mission d'évaluation de l'offre nutritionnelle - Mandataire ANAN";
+                
+                setTimeout(() => {
+                    const container = document.getElementById('slider-container');
+                    if (container) {
+                        container.addEventListener('scroll', () => {
+                            const index = Math.round(container.scrollLeft / container.offsetWidth);
+                            updateDots(index);
+                        });
+                    }
+                }, 100);
+
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                return;
+            }
+
             let placeholderHTML = '';
             if (axe === 1) {
                 placeholderHTML = `
@@ -554,6 +607,27 @@
             lightboxCarousel.innerHTML = placeholderHTML;
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
+        }
+
+        function scrollSlider(dir) {
+            const container = document.getElementById('slider-container');
+            if (container) {
+                container.scrollBy({ left: container.offsetWidth * dir, behavior: 'smooth' });
+            }
+        }
+
+        function scrollToSlide(idx) {
+            const container = document.getElementById('slider-container');
+            if (container) {
+                container.scrollTo({ left: container.offsetWidth * idx, behavior: 'smooth' });
+            }
+        }
+
+        function updateDots(idx) {
+            const dots = document.querySelectorAll('.lightbox-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === idx);
+            });
         }
 
         function closeGallery() {
