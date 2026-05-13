@@ -935,6 +935,15 @@
                         <i class="fas fa-building"></i>
                     </div>
                 </div>
+                <div class="glass-panel stat-card">
+                    <div class="stat-info">
+                        <h4>Actualités</h4>
+                        <div class="stat-value" id="stat-total-news">0</div>
+                    </div>
+                    <div class="stat-icon" style="background: rgba(255, 107, 107, 0.1); color: #ff6b6b;">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                </div>
             </div>
 
             <!-- ---------------------------------------------------- -->
@@ -1113,9 +1122,9 @@
                         </div>
                     </div>
 
-                    <!-- Services & Partenaires Card Group -->
+                    <!-- Services, Partenaires & Actualités Card Group -->
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 25px; border-radius: 12px; margin-top: 30px; margin-bottom: 30px;">
-                        <h4 style="font-size: 1.2rem; color: var(--primary-orange); margin-bottom: 20px;"><i class="fas fa-concierge-bell" style="margin-right: 10px;"></i> Pages Services & Partenaires (FR)</h4>
+                        <h4 style="font-size: 1.2rem; color: var(--primary-orange); margin-bottom: 20px;"><i class="fas fa-concierge-bell" style="margin-right: 10px;"></i> Pages Services, Partenaires & Actualités</h4>
                         
                         <div style="margin-bottom: 20px;">
                             <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-secondary);">Introduction Services :</label>
@@ -1123,10 +1132,22 @@
                             <button id="btn-save-key-services_intro" class="btn btn-sm" onclick="saveSiteContent('services_intro')" style="width: auto;"><i class="fas fa-save"></i> Enregistrer</button>
                         </div>
 
-                        <div style="margin-bottom: 10px;">
+                        <div style="margin-bottom: 20px;">
                             <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-secondary);">Introduction Partenaires :</label>
                             <textarea id="content-key-partners_intro" rows="3" style="width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; color: white; font-size: 1rem; margin-bottom: 10px; resize: vertical; font-family: inherit; line-height: 1.5;"></textarea>
                             <button id="btn-save-key-partners_intro" class="btn btn-sm" onclick="saveSiteContent('partners_intro')" style="width: auto;"><i class="fas fa-save"></i> Enregistrer</button>
+                        </div>
+
+                        <div style="margin-bottom: 20px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-secondary);">Introduction Actualités (FR) :</label>
+                            <textarea id="content-key-news_intro" rows="3" style="width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; color: white; font-size: 1rem; margin-bottom: 10px; resize: vertical; font-family: inherit; line-height: 1.5;"></textarea>
+                            <button id="btn-save-key-news_intro" class="btn btn-sm" onclick="saveSiteContent('news_intro')" style="width: auto;"><i class="fas fa-save"></i> Enregistrer</button>
+                        </div>
+
+                        <div style="margin-bottom: 10px;">
+                            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-secondary);">Introduction Actualités (EN) :</label>
+                            <textarea id="content-key-news_intro_en" rows="3" style="width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; color: white; font-size: 1rem; margin-bottom: 10px; resize: vertical; font-family: inherit; line-height: 1.5;"></textarea>
+                            <button id="btn-save-key-news_intro_en" class="btn btn-sm" onclick="saveSiteContent('news_intro_en')" style="width: auto;"><i class="fas fa-save"></i> Enregistrer</button>
                         </div>
                     </div>
 
@@ -1927,6 +1948,12 @@
         // Render News
         function renderNews() {
             const tbody = document.getElementById('news-table-body');
+            const statCounter = document.getElementById('stat-total-news');
+            
+            if (statCounter) {
+                statCounter.textContent = cachedNews.length;
+            }
+
             if (!tbody) return;
 
             if (cachedNews.length === 0) {
