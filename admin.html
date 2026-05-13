@@ -875,6 +875,9 @@
                 <li class="nav-item" data-target="section-pages">
                     <a href="#"><i class="fas fa-edit"></i> Contenus Pages</a>
                 </li>
+                <li class="nav-item" data-target="section-news">
+                    <a href="#"><i class="fas fa-newspaper"></i> Actualités</a>
+                </li>
             </ul>
 
             <a href="#" class="logout-btn" id="btn-logout">
@@ -1163,6 +1166,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ---------------------------------------------------- -->
+            <!-- SECTION NEWS                                         -->
+            <!-- ---------------------------------------------------- -->
+            <div id="section-news" class="dashboard-section">
+                <div class="glass-panel table-card">
+                    <div class="table-header">
+                        <h3>Gestion de l'Actualité</h3>
+                        <button class="btn btn-sm btn-primary" onclick="openNewsModal()"><i class="fas fa-plus"></i> Publier une actualité</button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Titre (FR)</th>
+                                    <th>Titre (EN)</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="news-table-body">
+                                <!-- News list rows inserted via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -1238,6 +1268,80 @@
     </div>
 
     <!-- ---------------------------------------------------- -->
+    <!-- NEWS CRUD ADD/EDIT MODAL                             -->
+    <!-- ---------------------------------------------------- -->
+    <div class="modal" id="news-form-modal">
+        <div class="glass-panel modal-content" style="max-width: 600px;">
+            <button class="close-modal" onclick="closeModal('news-form-modal')"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 id="news-modal-title">Publier une Actualité</h2>
+            </div>
+            <div class="modal-body">
+                <form id="news-form">
+                    <input type="hidden" id="form-news-id">
+                    
+                    <!-- Two column for basic info -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group">
+                            <label for="form-news-date">Date de publication</label>
+                            <input type="date" id="form-news-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Image de couverture</label>
+                            <div style="position: relative;">
+                                <input type="file" id="form-news-img-input" accept="image/*" style="opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer; z-index: 3;" onchange="handleNewsImgUpload(this)">
+                                <button type="button" class="btn btn-secondary btn-sm" style="width: 100%; text-align: center; position: relative; z-index: 1;"><i class="fas fa-image"></i> Choisir une image</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Preview Window -->
+                    <div id="news-image-preview-box" style="margin-bottom: 15px; display: none; position: relative;">
+                        <div style="height: 150px; border-radius: 8px; overflow: hidden; background: #000; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
+                            <img id="news-img-preview" src="" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                            <!-- Delete Image Link Overlay -->
+                            <button type="button" onclick="clearNewsImage()" style="position: absolute; top: 8px; right: 8px; background: rgba(255, 59, 48, 0.9); color: white; border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Hidden input keeping uploaded image string -->
+                    <input type="hidden" id="form-news-image-url">
+
+                    <!-- French Translation Row -->
+                    <div style="border-left: 3px solid var(--primary-orange); padding-left: 15px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-orange); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Version Française (Obligatoire)</h4>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="form-news-title">Titre de l'actualité</label>
+                            <input type="text" id="form-news-title" class="form-control" required placeholder="Ex: Signature du contrat ANAN...">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-news-content">Contenu / Texte</label>
+                            <textarea id="form-news-content" class="form-control" rows="5" style="resize: vertical; font-family: inherit;" required placeholder="Décrivez l'actualité en détail..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- English Translation Row -->
+                    <div style="border-left: 3px solid var(--primary-cyan); padding-left: 15px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-cyan); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Version Anglaise (Optionnelle)</h4>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="form-news-title-en">News Title (EN)</label>
+                            <input type="text" id="form-news-title-en" class="form-control" placeholder="Ex: Signature of the ANAN contract...">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-news-content-en">Content Text (EN)</label>
+                            <textarea id="form-news-content-en" class="form-control" rows="5" style="resize: vertical; font-family: inherit;" placeholder="Describe the news in English..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-green" id="btn-save-news" style="width: 100%;">
+                        <i class="fas fa-save"></i> <span>Publier l'actualité</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
     <!-- SUPABASE REAL-TIME WORKFLOW SCRIPT                   -->
     <!-- ---------------------------------------------------- -->
     <script>
@@ -1250,6 +1354,7 @@
         let currentSession = null;
         let cachedContacts = [];
         let cachedProjects = [];
+        let cachedNews = [];
 
         document.addEventListener('DOMContentLoaded', async () => {
             // Live date rendering
@@ -1268,6 +1373,7 @@
             document.getElementById('login-form').addEventListener('submit', handleLogin);
             document.getElementById('btn-logout').addEventListener('click', handleLogout);
             document.getElementById('project-form').addEventListener('submit', handleSaveProject);
+            document.getElementById('news-form').addEventListener('submit', handleSaveNews);
 
             // Setup Navigation item click triggers
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -1290,7 +1396,8 @@
                 'section-dashboard': { title: "Vue d'ensemble", sub: "Aperçu rapide des activités de votre cabinet" },
                 'section-messages': { title: "Messages", sub: "Liste des demandes reçues depuis le formulaire de contact" },
                 'section-projects': { title: "Références Projets", sub: "Gestion des références et réalisations de Techno Stat Group" },
-                'section-pages': { title: "Contenus Pages", sub: "Modifier les textes des pages publiques du site" }
+                'section-pages': { title: "Contenus Pages", sub: "Modifier les textes des pages publiques du site" },
+                'section-news': { title: "Gestion de l'Actualité", sub: "Publier, modifier et gérer les annonces de l'entreprise" }
             };
 
             if (sectionTitles[sectionId]) {
@@ -1316,6 +1423,7 @@
             loadContacts();
             loadProjects();
             loadSiteContent();
+            loadNews();
         }
 
         // When logged out
@@ -1796,6 +1904,200 @@
                 setTimeout(() => {
                     btn.innerHTML = `<i class="fas fa-save"></i> Enregistrer`;
                 }, 2000);
+            }
+        }
+
+        // ----------------------------------------------------
+        // NEWS OPERATIONAL ACTIONS
+        // ----------------------------------------------------
+
+        // Load News
+        async function loadNews() {
+            const { data, error } = await _supabase
+                .from('technostat_news')
+                .select('*')
+                .order('published_date', { ascending: false });
+
+            if (!error && data) {
+                cachedNews = data;
+                renderNews();
+            }
+        }
+
+        // Render News
+        function renderNews() {
+            const tbody = document.getElementById('news-table-body');
+            if (!tbody) return;
+
+            if (cachedNews.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px 0;">Aucune actualité enregistrée. Cliquez sur "Publier une actualité" pour commencer.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = cachedNews.map(n => `
+                <tr id="news-row-${n.id}">
+                    <td style="width: 120px;">${new Date(n.published_date).toLocaleDateString('fr-FR')}</td>
+                    <td style="font-weight: 500; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(n.title)}</td>
+                    <td style="color: var(--text-secondary); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${n.title_en ? escapeHTML(n.title_en) : '<em style="opacity:0.5">- Non configuré -</em>'}</td>
+                    <td class="actions-cell" style="text-align: right; width: 100px;">
+                        <button class="action-btn action-edit" onclick="openNewsModal('${n.id}')" title="Modifier" style="margin-right: 8px;"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn action-delete" onclick="deleteNews('${n.id}')" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Open News Modal for Add/Edit
+        function openNewsModal(id = null) {
+            const modal = document.getElementById('news-form-modal');
+            const title = document.getElementById('news-modal-title');
+            
+            // Reset Form
+            document.getElementById('news-form').reset();
+            document.getElementById('form-news-id').value = '';
+            document.getElementById('form-news-image-url').value = '';
+            document.getElementById('news-image-preview-box').style.display = 'none';
+            document.getElementById('news-img-preview').src = '';
+            
+            // Default to current date
+            const today = new Date().toISOString().substring(0, 10);
+            document.getElementById('form-news-date').value = today;
+
+            if (id) {
+                title.textContent = "Modifier l'Actualité";
+                const item = cachedNews.find(n => n.id === id);
+                if (item) {
+                    document.getElementById('form-news-id').value = item.id;
+                    document.getElementById('form-news-date').value = item.published_date;
+                    document.getElementById('form-news-title').value = item.title;
+                    document.getElementById('form-news-content').value = item.content;
+                    document.getElementById('form-news-title-en').value = item.title_en || '';
+                    document.getElementById('form-news-content-en').value = item.content_en || '';
+                    
+                    if (item.image_url) {
+                        document.getElementById('form-news-image-url').value = item.image_url;
+                        document.getElementById('news-img-preview').src = item.image_url;
+                        document.getElementById('news-image-preview-box').style.display = 'block';
+                    }
+                }
+            } else {
+                title.textContent = "Publier une Actualité";
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        // News image upload
+        async function handleNewsImgUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const container = input.parentElement;
+            const btn = container.querySelector('button');
+            const originalHTML = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Envoi...`;
+
+            try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `news_${Date.now()}.${fileExt}`;
+                const filePath = `uploads/news/${fileName}`;
+
+                const { data, error } = await _supabase.storage
+                    .from('experiences')
+                    .upload(filePath, file, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+
+                if (error) throw error;
+
+                // Get public url
+                const { data: { publicUrl } } = _supabase.storage
+                    .from('experiences')
+                    .getPublicUrl(filePath);
+
+                document.getElementById('form-news-image-url').value = publicUrl;
+                document.getElementById('news-img-preview').src = publicUrl;
+                document.getElementById('news-image-preview-box').style.display = 'block';
+
+            } catch (err) {
+                alert("Erreur lors du téléchargement: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+                input.value = ''; // clear file picker
+            }
+        }
+
+        function clearNewsImage() {
+            document.getElementById('form-news-image-url').value = '';
+            document.getElementById('news-img-preview').src = '';
+            document.getElementById('news-image-preview-box').style.display = 'none';
+        }
+
+        // Handle Save News Submit
+        async function handleSaveNews(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-news');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Enregistrement...`;
+
+            const id = document.getElementById('form-news-id').value;
+            const payload = {
+                published_date: document.getElementById('form-news-date').value,
+                title: document.getElementById('form-news-title').value,
+                content: document.getElementById('form-news-content').value,
+                title_en: document.getElementById('form-news-title-en').value || null,
+                content_en: document.getElementById('form-news-content-en').value || null,
+                image_url: document.getElementById('form-news-image-url').value || null
+            };
+
+            try {
+                let err;
+                if (id) {
+                    // Update
+                    const { error } = await _supabase
+                        .from('technostat_news')
+                        .update(payload)
+                        .eq('id', id);
+                    err = error;
+                } else {
+                    // Insert
+                    const { error } = await _supabase
+                        .from('technostat_news')
+                        .insert([payload]);
+                    err = error;
+                }
+
+                if (err) throw err;
+
+                closeModal('news-form-modal');
+                loadNews();
+            } catch (err) {
+                alert("Erreur lors de l'enregistrement: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        // Delete News row
+        async function deleteNews(id) {
+            if (!confirm("Êtes-vous sûr de vouloir supprimer définitivement cette actualité ?")) return;
+
+            try {
+                const { error } = await _supabase
+                    .from('technostat_news')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+                loadNews();
+            } catch (err) {
+                alert("Erreur lors de la suppression: " + err.message);
             }
         }
 
