@@ -474,7 +474,7 @@
                                 <div><i class="fas fa-building"></i> <strong>${p.axe === 2 ? 'Beneficiary' : 'Client'}:</strong> ${escapeHTML(p.mandataire)}</div>
                                 <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Theme' : 'Location'}:</strong> ${escapeHTML(p.lieu)}</div>
                             </div>
-                            <button class="btn-view-images" onclick="openGallery('${escapeJS(p.title)}', ${p.axe})">
+                            <button class="btn-view-images" onclick="openGallery('${escapeJS(p.title)} - ${escapeJS(p.mandataire)}', ${p.axe})">
                                 <i class="fas fa-images"></i> View images
                             </button>
                         </div>
@@ -534,7 +534,8 @@
             lightboxCarousel.classList.remove('has-images');
             
             // Check if specific project "ANAN"
-            if (title.toLowerCase().includes('anan')) {
+            const normalizedTitle = title.toLowerCase();
+            if (normalizedTitle.includes('anan') || normalizedTitle.includes('nutrition') || normalizedTitle.includes('canteen')) {
                 lightboxCarousel.classList.add('has-images');
                 
                 const images = [
