@@ -466,19 +466,22 @@
                     const axe2 = data.filter(p => p.axe === 2);
                     const axe3 = data.filter(p => p.axe === 3);
 
-                    const renderCard = p => `
-                        <div class="experience-card animate-fade-up visible">
-                            <span class="experience-date">${escapeHTML(p.date_str)}</span>
-                            <h4 class="experience-title">${escapeHTML(p.title)}</h4>
-                            <div class="experience-meta">
-                                <div><i class="fas fa-building"></i> <strong>${p.axe === 2 ? 'Beneficiary' : 'Client'}:</strong> ${escapeHTML(p.mandataire)}</div>
-                                <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Theme' : 'Location'}:</strong> ${escapeHTML(p.lieu)}</div>
+                    const renderCard = p => {
+                        const stringifiedImages = JSON.stringify(p.images || []).replace(/"/g, '&quot;');
+                        return `
+                            <div class="experience-card animate-fade-up visible">
+                                <span class="experience-date">${escapeHTML(p.date_str)}</span>
+                                <h4 class="experience-title">${escapeHTML(p.title)}</h4>
+                                <div class="experience-meta">
+                                    <div><i class="fas fa-building"></i> <strong>${p.axe === 2 ? 'Beneficiary' : 'Client'}:</strong> ${escapeHTML(p.mandataire)}</div>
+                                    <div><i class="${p.axe === 2 ? 'fas fa-laptop-code' : 'fas fa-map-marker-alt'}"></i> <strong>${p.axe === 2 ? 'Theme' : 'Location'}:</strong> ${escapeHTML(p.lieu)}</div>
+                                </div>
+                                <button class="btn-view-images" onclick="openGallery('${escapeJS(p.title)} - ${escapeJS(p.mandataire)}', ${p.axe}, ${stringifiedImages})">
+                                    <i class="fas fa-images"></i> View images
+                                </button>
                             </div>
-                            <button class="btn-view-images" onclick="openGallery('${escapeJS(p.title)} - ${escapeJS(p.mandataire)}', ${p.axe})">
-                                <i class="fas fa-images"></i> View images
-                            </button>
-                        </div>
-                    `;
+                        `;
+                    };
 
                     if (axe1.length > 0) {
                         document.getElementById('axe-1-grid').innerHTML = axe1.map(renderCard).join('');
@@ -522,7 +525,7 @@
             });
         });
 
-        function openGallery(title, axe) {
+        function openGallery(title, axe, customImages = []) {
             const lightbox = document.getElementById('gallery-lightbox');
             const lightboxTitle = document.getElementById('lightbox-title');
             const lightboxCarousel = document.getElementById('lightbox-carousel');
@@ -533,12 +536,13 @@
             // Reset visual class
             lightboxCarousel.classList.remove('has-images');
             
-            // Check if specific project "ANAN"
+            // Determine images to use: custom array first, then hardcoded fallback
+            let imagesToDisplay = Array.isArray(customImages) ? [...customImages] : [];
+            
+            // Check if specific project "ANAN" for local fallback if no cloud photos provided
             const normalizedTitle = title.toLowerCase();
-            if (normalizedTitle.includes('anan') || normalizedTitle.includes('nutrition') || normalizedTitle.includes('canteen')) {
-                lightboxCarousel.classList.add('has-images');
-                
-                const images = [
+            if (imagesToDisplay.length === 0 && (normalizedTitle.includes('anan') || normalizedTitle.includes('nutrition') || normalizedTitle.includes('canteen'))) {
+                imagesToDisplay = [
                     'img/experiences/anan/anan-1.jpg',
                     'img/experiences/anan/anan-2.jpg',
                     'img/experiences/anan/anan-3.jpg',
@@ -548,10 +552,14 @@
                     'img/experiences/anan/anan-7.jpg',
                     'img/experiences/anan/anan-8.jpg'
                 ];
+            }
+
+            if (imagesToDisplay.length > 0) {
+                lightboxCarousel.classList.add('has-images');
                 
                 lightboxCarousel.innerHTML = `
                     <div class="lightbox-slider" id="slider-container">
-                        ${images.map((src, idx) => `
+                        ${imagesToDisplay.map((src, idx) => `
                             <div class="lightbox-slide">
                                 <img src="${src}" alt="Photo ${idx + 1}">
                             </div>
@@ -560,11 +568,11 @@
                     <button class="lightbox-nav-btn prev" onclick="scrollSlider(-1)"><i class="fas fa-chevron-left"></i></button>
                     <button class="lightbox-nav-btn next" onclick="scrollSlider(1)"><i class="fas fa-chevron-right"></i></button>
                     <div class="lightbox-dots">
-                        ${images.map((_, idx) => `<div class="lightbox-dot ${idx === 0 ? 'active' : ''}" onclick="scrollToSlide(${idx})"></div>`).join('')}
+                        ${imagesToDisplay.map((_, idx) => `<div class="lightbox-dot ${idx === 0 ? 'active' : ''}" onclick="scrollToSlide(${idx})"></div>`).join('')}
                     </div>
                 `;
                 
-                lightboxCaption.innerText = "Photos from the nutritional offer evaluation mission - Client ANAN";
+                lightboxCaption.innerText = "Photos / Project gallery - " + title;
                 
                 setTimeout(() => {
                     const container = document.getElementById('slider-container');
